@@ -1,36 +1,38 @@
 import { Feather } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Button, SizableText, View, XStack } from 'tamagui';
+import { Button, XStack } from 'tamagui';
+import AllDonePanel from '~/components/panels/AllDonePanel';
+import WelcomePanel from '~/components/panels/WelcomePanel';
+import { Container } from '~/tamagui.config';
 
-export default function welcome({ start }: { start: () => void }) {
-  const [step, setStep] = useState(1);
+export default function WelcomeScreen({ start }: { start: () => void }) {
+  const [stepIndex, setStepIndex] = useState(0);
+  const panels = [<WelcomePanel />, <AllDonePanel />];
   const changePanel = () => {
-    if (step < 4) setStep(step + 1);
+    if (stepIndex < panels.length - 1) setStepIndex(stepIndex + 1);
   };
   return (
-    <View flex={1}>
-      <View flex={1} justifyContent="center" alignContent="center">
-        <SizableText size="$10" textAlign="center">
-          Welcome to DoX
-        </SizableText>
-      </View>
-      {step === 4 ? (
-        <View p="$4">
-          <Button onPress={start}>let's start</Button>
-        </View>
-      ) : (
-        <XStack justifyContent="space-between" alignItems="center" p="$4">
-          <XStack gap="$2">
-            <Feather name={step === 1 ? 'x-circle' : 'circle'} size={18} />
-            <Feather name={step === 2 ? 'x-circle' : 'circle'} size={18} />
-            <Feather name={step === 3 ? 'x-circle' : 'circle'} size={18} />
-            <Feather name={step === 4 ? 'x-circle' : 'circle'} size={18} />
-          </XStack>
-          <Button size="$3" onPress={changePanel}>
-            Next
-          </Button>
+    <Container flex={1} p="$4">
+      {panels[stepIndex]}
+      <XStack marginTop="auto" justifyContent="space-between" alignItems="center">
+        <XStack gap="$2">
+          {panels.map((_, index) => (
+            <Feather
+              key={index}
+              name={index === stepIndex ? 'x-circle' : 'circle'}
+              color={index === stepIndex ? 'black' : 'gray'}
+              size={20}
+            />
+          ))}
         </XStack>
-      )}
-    </View>
+        {stepIndex === panels.length - 1 ? (
+          <Button onPress={start}>let's start</Button>
+        ) : (
+          <Button size="$4" onPress={changePanel}>
+            Continue
+          </Button>
+        )}
+      </XStack>
+    </Container>
   );
 }

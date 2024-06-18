@@ -1,5 +1,5 @@
-import * as Haptics from 'expo-haptics'
-import { Link } from 'expo-router'
+import * as Haptics from 'expo-haptics';
+import { Link } from 'expo-router';
 import {
   XStack,
   YStack,
@@ -10,14 +10,14 @@ import {
   ScrollView,
   CardHeader,
   View,
-} from 'tamagui'
+} from 'tamagui';
 
-import { Container, Subtitle, Title } from '../tamagui.config'
+import { Container, Subtitle, Title } from '../tamagui.config';
 
 export default function Details() {
   return (
-    <ScrollView>
-      <Container pt="$2">
+    <Container>
+      <ScrollView>
         <YStack pb="$2">
           <XStack alignItems="flex-end">
             <Title>Dox</Title>
@@ -63,7 +63,7 @@ export default function Details() {
             your daily tasks with Dox.
           </Paragraph>
         </YStack>
-      </Container>
-    </ScrollView>
-  )
+      </ScrollView>
+    </Container>
+  );
 }

@@ -4,7 +4,7 @@ import * as Haptics from 'expo-haptics';
 import { Stack, useRouter, SplashScreen } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { TamaguiProvider, Button, Theme, XStack } from 'tamagui';
-import Welcome from './welcome';
+import WelcomeScreen from './welcome';
 
 import config from '../tamagui.config';
 
@@ -69,7 +69,7 @@ export default function Layout() {
     <TamaguiProvider config={config}>
       <Theme name="light">
         {welcome ? (
-          <Welcome start={() => setWelcome(false)} />
+          <WelcomeScreen start={() => setWelcome(false)} />
         ) : (
           <Stack>
             <Stack.Screen

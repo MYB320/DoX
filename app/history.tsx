@@ -1,58 +1,58 @@
-import { Stack } from 'expo-router'
-import { useEffect, useState } from 'react'
-import { H1, ScrollView, Separator, SizableText, Text, XStack, YStack, Spinner } from 'tamagui'
+import { Stack } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { H1, ScrollView, Separator, SizableText, Text, XStack, YStack, Spinner } from 'tamagui';
 
-import { DeleteButton } from '../components/DelteButton'
-import Todo from '../components/Todo'
-import { db } from '../db'
-import { Container } from '../tamagui.config'
-import { todos } from '../types/todos'
+import { DeleteButton } from '../components/DelteButton';
+import Todo from '../components/Todo';
+import { db } from '../db';
+import { Container } from '../tamagui.config';
+import { todos } from '../types/todos';
 
 export default function History() {
-  const [logs, setLogs] = useState<Record<string, todos>>({})
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [logs, setLogs] = useState<Record<string, todos>>({});
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const sortByTime = (data: todos) => {
     data.sort(function (a, b) {
-      return a.time.localeCompare(b.time)
-    })
-    return data
-  }
+      return a.time.localeCompare(b.time);
+    });
+    return data;
+  };
 
   const groupedByDate = (data: todos) => {
-    const groupedData: Record<string, todos> = {}
+    const groupedData: Record<string, todos> = {};
     data.forEach((item) => {
-      const dateKey = item.date
+      const dateKey = item.date;
 
       if (!groupedData[dateKey]) {
-        groupedData[dateKey] = []
+        groupedData[dateKey] = [];
       }
-      groupedData[dateKey].push(item)
-    })
-    return groupedData
-  }
+      groupedData[dateKey].push(item);
+    });
+    return groupedData;
+  };
 
   const deleteAllLogs = () => {
     db.transaction((tx) => {
-      tx.executeSql('DELETE FROM Todos;', [])
-      setLogs({})
-    })
-  }
+      tx.executeSql('DELETE FROM Todos;', []);
+      setLogs({});
+    });
+  };
 
   useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(`select * from Todos;`, [], (txObj, { rows: { _array } }) => {
-        const data = groupedByDate(sortByTime(_array))
-        setLogs(data)
-      })
-      setIsLoading(false)
-    })
-  }, [logs])
+        const data = groupedByDate(sortByTime(_array));
+        setLogs(data);
+      });
+      setIsLoading(false);
+    });
+  }, [logs]);
 
   return (
-    <ScrollView>
+    <Container>
       <Stack.Screen options={{ headerRight: () => <DeleteButton deleteAll={deleteAllLogs} /> }} />
-      <Container>
+      <ScrollView>
         <H1>History</H1>
         <YStack pt={15}>
           {isLoading ? (
@@ -78,7 +78,7 @@ export default function History() {
             ))
           )}
         </YStack>
-      </Container>
-    </ScrollView>
-  )
+      </ScrollView>
+    </Container>
+  );
 }
