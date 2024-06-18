@@ -1,29 +1,31 @@
-import { Feather } from '@expo/vector-icons'
-import { useFonts } from 'expo-font'
-import * as Haptics from 'expo-haptics'
-import { Stack, useRouter, SplashScreen } from 'expo-router'
-import React, { useEffect } from 'react'
-import { TamaguiProvider, Button, Theme, XStack } from 'tamagui'
+import { Feather } from '@expo/vector-icons';
+import { useFonts } from 'expo-font';
+import * as Haptics from 'expo-haptics';
+import { Stack, useRouter, SplashScreen } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { TamaguiProvider, Button, Theme, XStack } from 'tamagui';
+import Welcome from './welcome';
 
-import config from '../tamagui.config'
+import config from '../tamagui.config';
 
-SplashScreen.preventAutoHideAsync()
+SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
-  const router = useRouter()
+  const [welcome, setWelcome] = useState<boolean>(true);
+  const router = useRouter();
 
   const [loaded] = useFonts({
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
     InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
-  })
+  });
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync()
+      SplashScreen.hideAsync();
     }
-  }, [loaded])
+  }, [loaded]);
 
-  if (!loaded) return null
+  if (!loaded) return null;
 
   const BackButton = () => (
     <Button
@@ -31,12 +33,12 @@ export default function Layout() {
       pressStyle={{ opacity: 0.1 }}
       paddingHorizontal="$2"
       onPress={() => {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-        router.back()
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        router.back();
       }}
       icon={<Feather name="arrow-left" size={18} />}
     />
-  )
+  );
 
   const DetailsButton = () => (
     <Button
@@ -44,57 +46,61 @@ export default function Layout() {
       paddingHorizontal="$2"
       pressStyle={{ opacity: 0.1 }}
       onPress={() => {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-        router.push('/details')
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        router.push('/details');
       }}
       icon={<Feather name="info" size={18} />}
     />
-  )
+  );
   const HistoryButton = () => (
     <Button
       unstyled
       paddingHorizontal="$2"
       pressStyle={{ opacity: 0.1 }}
       onPress={() => {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-        router.push('/history')
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        router.push('/history');
       }}
       icon={<Feather name="list" size={18} />}
     />
-  )
+  );
 
   return (
     <TamaguiProvider config={config}>
       <Theme name="light">
-        <Stack>
-          <Stack.Screen
-            name="index"
-            options={{
-              title: 'DoX',
-              headerRight: () => (
-                <XStack gap="$2">
-                  <HistoryButton />
-                  <DetailsButton />
-                </XStack>
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="details"
-            options={{
-              title: 'Details',
-              headerLeft: () => <BackButton />,
-            }}
-          />
-          <Stack.Screen
-            name="history"
-            options={{
-              title: 'History',
-              headerLeft: () => <BackButton />,
-            }}
-          />
-        </Stack>
+        {welcome ? (
+          <Welcome start={() => setWelcome(false)} />
+        ) : (
+          <Stack>
+            <Stack.Screen
+              name="index"
+              options={{
+                title: 'DoX',
+                headerRight: () => (
+                  <XStack gap="$2">
+                    <HistoryButton />
+                    <DetailsButton />
+                  </XStack>
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="details"
+              options={{
+                title: 'Details',
+                headerLeft: () => <BackButton />,
+              }}
+            />
+            <Stack.Screen
+              name="history"
+              options={{
+                title: 'History',
+                headerLeft: () => <BackButton />,
+              }}
+            />
+          </Stack>
+        )}
       </Theme>
     </TamaguiProvider>
-  )
+  );
 }

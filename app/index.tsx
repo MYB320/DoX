@@ -4,7 +4,6 @@ import * as Haptics from 'expo-haptics';
 import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { Button, H1, Separator, Spinner, Text, XStack, YStack } from 'tamagui';
-
 import { AddTodo } from '../components/AddTodo';
 import Todo from '../components/Todo';
 import { db } from '../db';

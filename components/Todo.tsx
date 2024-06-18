@@ -1,17 +1,17 @@
-import { Feather } from '@expo/vector-icons'
-import { useState } from 'react'
-import { Text, SizableText, Card, XStack, Button } from 'tamagui'
+import { Feather } from '@expo/vector-icons';
+import { useState } from 'react';
+import { Text, SizableText, Card, XStack, Button } from 'tamagui';
 
 type TodoProps = {
-  title: string
-  date?: string
-  time: string
-  iscomplete: boolean
-  yesterday?: string
-  onPress?: () => void
-  onLongPress?: () => void
-  MovetoToday?: () => void
-}
+  title: string;
+  date?: string;
+  time: string;
+  iscomplete: boolean;
+  yesterday?: string;
+  onPress?: () => void;
+  onLongPress?: () => void;
+  MovetoToday?: () => void;
+};
 
 const Todo = ({
   yesterday,
@@ -23,21 +23,21 @@ const Todo = ({
   onLongPress,
   MovetoToday,
 }: TodoProps) => {
-  const [press, setPress] = useState<boolean>(false)
+  const [press, setPress] = useState<boolean>(false);
   return (
     <Card
       borderWidth={0.1}
       borderRadius={14}
-      backgroundColor={press ? '$red10' : iscomplete ? '$gray4' : 'white'}
+      backgroundColor={press ? '$red10' : iscomplete ? '$gray6' : 'white'}
       onPress={onPress}
       onLongPress={() => {
-        onLongPress && setPress(true)
-        onLongPress && setTimeout(() => setPress(false), 1000)
-        onLongPress && onLongPress()
+        onLongPress && setPress(true);
+        onLongPress && setTimeout(() => setPress(false), 1000);
+        onLongPress && onLongPress();
       }}
       marginVertical="$1.5">
       <Card.Header>
-        <XStack justifyContent="space-between" alignItems="center">
+        <XStack justifyContent="space-between" alignItems="center" gap="$2">
           <XStack gap="$2" alignItems="center">
             <Feather
               name={iscomplete ? 'check-circle' : 'circle'}
@@ -48,7 +48,7 @@ const Todo = ({
               textDecorationLine={iscomplete ? 'line-through' : 'none'}
               color={press ? 'white' : iscomplete ? '$gray10' : 'black'}
               numberOfLines={2}
-              width="$15">
+              maxWidth="$15">
               {title}
             </SizableText>
           </XStack>
@@ -80,7 +80,7 @@ const Todo = ({
         </XStack>
       </Card.Header>
     </Card>
-  )
-}
+  );
+};
 
-export default Todo
+export default Todo;
